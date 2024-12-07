@@ -1,0 +1,56 @@
+trigger:
+  - none
+
+variables:
+  - group: InfraAgentServiceCatalog  # Variable group for common secrets
+  - name: PATTOKEN
+    value: "$(PAT)"  # Replace with a secure Azure DevOps secret reference
+  - name: ARTIFACTORY_PASS
+    value: "$(ArtifactoryPassword)"  # Replace with a secure Azure DevOps secret reference
+  - name: PRODUCT_NAME
+    value: "example-product-name"  # Replace with a generic placeholder
+
+stages:
+  - stage: DeployORUpdateTST
+    displayName: Deploy/Update AWS Service Catalog to TST
+    variables:
+      - group: myapp-tst  # Pull variables specific to the Test environment
+    jobs:
+      - template: deploy-service-catalog.yml
+        parameters:
+          AWS_ACCOUNTID: "$(AWS_ACCOUNTID)"       # Pulled securely from Library
+          AsgPrefix: "$(ASG_PREFIX)"             # ASG Prefix from Library
+          AgentPoolName: "example-agentpoolname-T"  # Placeholder pool name
+          TagNowApplicationService: "Example-TST-Service"  # Generic placeholder
+          TagNowEnvironment: "Test"              # Descriptive environment name
+          InstanceTypeParameter: "t3.large"      # Instance type remains generic
+
+  - stage: DeployORUpdateACC
+    dependsOn: DeployORUpdateTST
+    displayName: Deploy/Update AWS Service Catalog to ACC
+    variables:
+      - group: myapp-acc  # Pull variables specific to Acceptance environment
+    jobs:
+      - template: deploy-service-catalog.yml
+        parameters:
+          AWS_ACCOUNTID: "$(AWS_ACCOUNTID)"
+          AsgPrefix: "$(ASG_PREFIX)"
+          AgentPoolName: "example-agentpoolname-A"
+          TagNowApplicationService: "Example-ACC-Service"
+          TagNowEnvironment: "Acceptance"
+          InstanceTypeParameter: "t3.medium"
+
+  - stage: DeployORUpdatePRD
+    dependsOn: DeployORUpdateACC
+    displayName: Deploy/Update AWS Service Catalog to PRD
+    variables:
+      - group: myapp-prod  # Pull variables specific to Production environment
+    jobs:
+      - template: deploy-service-catalog.yml
+        parameters:
+          AWS_ACCOUNTID: "$(AWS_ACCOUNTID)"
+          AsgPrefix: "$(ASG_PREFIX)"
+          AgentPoolName: "example-agentpoolname-P"
+          TagNowApplicationService: "Example-PRD-Service"
+          TagNowEnvironment: "Production"
+          InstanceTypeParameter: "t3.medium"
