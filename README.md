@@ -3,7 +3,9 @@
 This repository provides an automated pipeline for provisioning and updating AWS Service Catalog products that host Azure DevOps agents running on EC2 instances within an Auto Scaling Group (ASG). The solution ensures instances are seamlessly updated with the latest version of the product, using AWS instance refresh for controlled restarts.
 
 # How It Works
-The pipeline detects if a new version of the AWS Service Catalog product is available.
+The pipeline detects if a specific product is provisioned, if not then the it provisions the product.
+The product's name is defined as a variable in Azure Devops Library.
+If the product exists then the code checks if a new version of the AWS Service Catalog product is available.
 If a new version exists, it provisions the updated product.
 EC2 instances within the Auto Scaling Group are refreshed one by one, ensuring minimal disruption.
 Configurable warm-up times ensure instances are fully initialized before replacements continue.
