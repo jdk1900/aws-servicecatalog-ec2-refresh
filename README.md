@@ -47,3 +47,5 @@ AWS Auto Scaling Groups (ASG)
 Azure DevOps Pipelines
 
 Bash Scripting
+
+AWS CLI
