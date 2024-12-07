@@ -12,7 +12,11 @@ Configurable warm-up times ensure instances are fully initialized before replace
 The pipeline currently supports deployments to multiple environments:
 
 Test (TST)
+
 Acceptance (ACC)
+
+Production (PRD)
+
 Environment-specific values such as AWS account IDs, ASG prefixes, and tags are managed via Azure DevOps Library.
 
 # Prerequisites
@@ -34,6 +38,9 @@ Run the pipeline to provision or update the product.
 
 # Technologies Used
 AWS Service Catalog
+
 AWS Auto Scaling Groups (ASG)
+
 Azure DevOps Pipelines
+
 Bash Scripting
