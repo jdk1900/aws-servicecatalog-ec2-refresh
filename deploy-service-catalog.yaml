@@ -1,0 +1,62 @@
+parameters:
+  AWS_ACCOUNTID: <set>
+  AsgPrefix: <set>
+  AgentPoolName: <set>
+  TagNowApplicationService: <set>
+  TagNowEnvironment: <set>
+  InstanceTypeParameter: <set>
+
+  jobs:
+  - job: Launch_AWS_Product
+    displayName: "Launch AWS Service Catalog Product"
+    pool:
+      vmImage: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout Code
+      - checkout: self
+        displayName: "Checkout Repository"
+
+      # Step 2: Debug AWS Account ID
+      - script: |
+          echo "Checking AWS Account ID value..."
+          echo "AWS Account ID: ${{ parameters.AWS_ACCOUNTID }}"
+        displayName: "Echo AWS Account ID"
+
+      # Step 3: Assume AWS Role
+      - task: myassume-role@0
+        displayName: "Assume AWS Role"
+        inputs:
+          roleARN: "arn:aws:iam::${{ parameters.AWS_ACCOUNTID }}:role/myaws-azurerole"
+          assumeRoleTaskServiceConnection: "myidp"
+          roleDurationSeconds: 900
+          region: "eu-west-1"
+
+      # Step 4: Install jq (JSON processor)
+      - script: |
+          echo "Updating jq..."  
+          sudo apt-get update && sudo apt-get install -y jq  
+          echo "jq updated successfully."
+        displayName: "Install jq"
+
+      # Step 5: Search for Product
+      - script: |
+          echo "Searching for the AWS Service Catalog Product..."
+          chmod +x ./scripts/search_product.sh
+          ./scripts/search_product.sh $PRODUCT_NAME
+        displayName: "Search for Product"
+
+      # Step 6: Update Parameters File and Provision Product
+      - script: |
+          echo "Updating parameters.json with environment-specific values..."
+          sed -i 's/pat_token_variable/$(PATTOKEN)/g' ./parameters.json
+          sed -i 's/artifactory_password_variable/$(ARTIFACTORY_PASS)/g' ./parameters.json
+          sed -i 's/agent_pool_name/${{ parameters.AgentPoolName }}/g' ./parameters.json
+          sed -i 's/tag_application_service/${{ parameters.TagNowApplicationService }}/g' ./parameters.json
+          sed -i 's/tag_environment/${{ parameters.TagNowEnvironment }}/g' ./parameters.json
+          sed -i 's/instance_type/${{ parameters.InstanceTypeParameter }}/g' ./parameters.json
+          
+          echo "Provisioning the AWS Service Catalog Product..."
+          chmod +x ./scripts/provision_product.sh
+          ./scripts/provision_product.sh $PRODUCT_NAME ${{ parameters.AsgPrefix }} ${{ parameters.TagNowEnvironment }}
+        displayName: "Provision the Product"
