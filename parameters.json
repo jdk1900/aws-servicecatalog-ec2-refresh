@@ -1,0 +1,78 @@
+[
+  {
+    "Key": "AdoPoolDesiredCapacity",
+    "Value": "3"
+  },
+  {
+    "Key": "AdoPoolMaxSize",
+    "Value": "4"
+  },
+  {
+    "Key": "AgentEnvironment",
+    "Value": "Experimental"
+  },
+  {
+    "Key": "AgentName",
+    "Value": "aws-agent"
+  },
+  {
+    "Key": "AgentPATToken",
+    "Value": "<REPLACE_WITH_SECRET>"
+  },
+  {
+    "Key": "AgentPolicy",
+    "Value": "{ \"Version\": \"2012-10-17\", \"Statement\": [ { \"Effect\": \"Allow\", \"Action\": [ \"ec2:DescribeInstances\", \"cloudwatch:GetMetricData\" ], \"Resource\": \"*\" } ] }"
+  },
+  {
+    "Key": "ArtifactoryPassword",
+    "Value": "<REPLACE_WITH_SECRET>"
+  },
+  {
+    "Key": "ArtifactoryUsername",
+    "Value": "<REDACTED>"
+  },
+  {
+    "Key": "InstanceTypeParameter",
+    "Value": "instance_type"
+  },
+  {
+    "Key": "OnlyBusinessHours",
+    "Value": "false"
+  },
+  {
+    "Key": "OrgUrl",
+    "Value": "https://example.com"
+  },
+  {
+    "Key": "RootVolumeSize",
+    "Value": "100"
+  },
+  {
+    "Key": "TagNowCostCenter",
+    "Value": "<REDACTED>"
+  },
+  {
+    "Key": "TagNowLocation",
+    "Value": "Anywhere"
+  },
+  {
+    "Key": "TagNowManagedByGroup",
+    "Value": "Example-Managed-Group"
+  },
+  {
+    "Key": "TagNowSupportGroup",
+    "Value": "Example-Support-Group"
+  },
+  {
+    "Key": "AgentPoolName",
+    "Value": "example_agent_pool"
+  },
+  {
+    "Key": "TagNowApplicationService",
+    "Value": "example_application_service"
+  },
+  {
+    "Key": "TagNowEnvironment",
+    "Value": "example_environment"
+  }
+]
