@@ -9,7 +9,7 @@ If the product exists then the code checks if a new version of the AWS Service C
 If a new version exists, it provisions the updated product.
 EC2 instances within the Auto Scaling Group are refreshed one by one, ensuring minimal disruption.
 Configurable warm-up times ensure instances are fully initialized before replacements continue.
-The pipeline is scheduled to run every day at 04:00 AM via "Triggers" in Azure Devops.
+The pipeline can be scheduled to run every day at a specific time via "Triggers" in Azure Devops or by using cron.
 
 # Environments
 The pipeline currently supports deployments to multiple environments:
