@@ -113,7 +113,7 @@ else
 
 
   sleep 600  # Sleep for 10 min to give time to AWS Service Catalog product to be updated.
-  echo "Product provisioned successfully.EC2 instances will be refreshed one by one in ASG every 12 minutes.."
+  echo "Product provisioned successfully.EC2 instances will be refreshed one by one in ASG every 20 minutes.."
   # Call the function to refresh the instances after updating
   perform_instance_refresh
 
